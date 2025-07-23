@@ -1,0 +1,954 @@
+:root {
+    --primary-color: #FF9966;
+    --secondary-color: #FFC49A;
+    --accent-color: #E05B3A;
+    --dark-bg: #3A3A3A;
+    --light-bg: #FFFFFF;
+    --text-color: var(--dark-bg);
+    --light-text-color: #FFFFFF;
+    --border-color: #EEEEEE;
+    --illustration-grey: #888888;
+
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 3rem;
+    --spacing-xl: 5rem;
+    --spacing-xxl: 8rem;
+
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --box-shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.page-container {
+    margin: 0 auto;
+    overflow-x: hidden;
+}
+
+/* Base padding for all sections to keep content within boundaries */
+section {
+    padding: var(--spacing-lg) var(--spacing-md); /* Default vertical and horizontal padding for sections */
+}
+
+.content-wrapper {
+    max-width: 1200px; /* Limits content width within sections */
+    margin: 0 auto; /* Centers content within sections */
+    padding: 0; /* Remove default padding here as section itself has it */
+}
+
+.main-header {
+    background-color: var(--dark-bg);
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1000;
+}
+
+.main-header .wahpuff-logo {
+    max-height: 40px;
+    width: auto;
+}
+
+.main-nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--dark-bg);
+    padding: var(--spacing-xs) var(--spacing-md);
+    box-shadow: var(--box-shadow-light);
+}
+
+.main-nav.is-open {
+    display: flex;
+}
+
+.main-nav .nav-link {
+    color: var(--light-text-color);
+    text-decoration: none;
+    padding: var(--spacing-sm) 0;
+    text-align: center;
+    font-size: 1.1em;
+    /*border-bottom: 1px solid rgba(255,255,255,0.1);*/
+}
+
+.main-nav .nav-link:last-child {
+    border-bottom: none;
+}
+
+.main-nav .nav-link:hover {
+    color: var(--primary-color);
+}
+
+.hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 45px;
+    height: 35px; /* Height to accommodate 3 spans + spacing */
+    cursor: pointer;
+    z-index: 1100;
+    padding: 5px; /* Added padding to make it easier to click */
+}
+
+.hamburger-icon span {
+    display: block;
+    height: 4px;
+    background-color: var(--light-text-color);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Animación al hacer clic */
+.hamburger-icon.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-icon.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-icon.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Hero Section Modern - With Background Image */
+.hero-section.modern.background-image-hero {
+    background-image: url('https://images.pexels.com/photos/33597/guitar-classical-guitar-acoustic-guitar-electric-guitar.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    color: white;
+    padding: 6rem var(--spacing-md); /* Consistent horizontal padding */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px; /* Adjusted max-width */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg); /* Using spacing variable */
+}
+
+.hero-text {
+    max-width: 600px;
+}
+
+.hero-text h1 {
+    font-size: 2.5rem; /* Adjusted for mobile readability */
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem; /* Adjusted for mobile readability */
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: var(--spacing-md);
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-primary, .btn-secondary {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 0.3rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    border: 2px solid var(--accent-color);
+    padding: 0.75em 1.5em;
+    border-radius: var(--border-radius-md);
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-color);
+    border-color: var(--primary-color);
+    color: var(--light-text-color);
+}
+
+.hero-rating {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--light-text-color);
+}
+
+.hero-rating .stars {
+    font-size: 2.5rem;         
+    letter-spacing: 0.2rem;    
+    color: #FFC107;            
+    display: block;
+    line-height: 1.2;
+}
+
+.hero-rating .rating-text {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+}
+
+/* Secondary button for general use, not specifically for hero */
+.btn-secondary {
+    background-color: transparent;
+    color: var(--primary-color); /* Using primary color for secondary button text */
+    border: 2px solid var(--primary-color); /* Using primary color for secondary button border */
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+}
+
+.btn-primary.large, .btn-secondary.large {
+    font-size: 1.1rem;
+    padding: 1.2rem 2.5rem;
+}
+
+/* Problem-Solution Section */
+.problem-solution-section {
+    text-align: center;
+}
+
+.problem-solution-section h2 {
+    font-size: 2.2rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.problem-grid {
+    display: grid;
+    gap: var(--spacing-md);
+    grid-template-columns: 1fr;
+    margin-top: var(--spacing-md);
+}
+
+.problem-item {
+    padding: var(--spacing-md);
+}
+
+.problem-item img {
+    width: 70%; /*Make it responsive to its container */
+    max-width: 300px;  /*Set a maximum size so it doesn't get too big */
+    min-width: 100px;  /*Ensure a minimum size on very small screens */
+    height: auto;
+    margin-bottom: var(--spacing-sm);
+    display: block; /* Ensures proper spacing and centering */
+    margin-left: auto; /* Centers the image */
+    margin-right: auto; /* Centers the image */
+}
+
+.problem-item h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-xs);
+    font-size: 1.25rem;
+}
+
+.problem-item p {
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+.result-demonstration {
+    margin-top: var(--spacing-xl); /* More space before result demonstration */
+    padding: var(--spacing-md);
+}
+
+.result-demonstration img {
+    display: block;
+    margin: 0 auto var(--spacing-sm);
+    max-width: 200px;
+    height: auto;
+}
+
+.result-demonstration .highlight-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color); /* Highlight with primary color */
+    margin-bottom: var(--spacing-xs);
+}
+
+.result-demonstration p {
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.card {
+    background-color: var(--light-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-light);
+    padding: var(--spacing-md);
+    text-align: center;
+    transition: transform 0.4s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.card.clicked {
+    background-color: var(--secondary-color);
+}
+
+.callout {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: orange; 
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Objections Section */
+.objections-section {
+    background-color: var(--dark-bg);
+    padding: var(--spacing-xl) var(--spacing-md);
+    color: var(--light-text-color);
+    text-align: center;
+}
+
+.objections-section h2 {
+    font-size: 2.2rem;
+    color: var(--light-text-color); /* Ensure heading is white */
+    margin-bottom: var(--spacing-lg);
+}
+
+.objections-grid {
+    display: grid;
+    gap: var(--spacing-md);
+    grid-template-columns: 1fr; /* Single column on mobile */
+    max-width: 1000px; /* Limit width of grid itself */
+    margin: 0 auto;
+}
+
+.objection-item {
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-light);
+    padding: var(--spacing-md);
+    margin: 0; /* Remove margin here as gap handles spacing */
+    transition: transform 0.3s ease;
+}
+
+.objection-item:hover {
+    transform: translateY(-5px);
+}
+
+.objection-item ion-icon {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    font-size: 1.5rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-sm);
+}
+
+/* Proof Section */
+.proof-section.modern {
+    text-align: center;
+}
+
+.proof-section.modern h2 {
+    font-size: 2.2rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.proof-wrapper {
+    max-width: 1000px; /* Consistent max width for content within proof section */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column; /* Stack on mobile */
+    gap: var(--spacing-xl); /* Space between proof content and testimonial */
+}
+
+.proof-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: center; /* Center items vertically */
+}
+
+.proof-points {
+    width: 100%; /* Full width on mobile */
+    margin-bottom: var(--spacing-md); /* Space below points before image */
+}
+
+.proof-points ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.proof-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    background-color: var(--light-bg);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-light);
+    transition: transform 0.2s ease;
+}
+
+.proof-points li:hover {
+    transform: translateY(-3px);
+}
+
+.proof-points li p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* Certificado image styling (previously .problem-item, now .proof-image) */
+.proof-image {
+    width: 100%; /* Take full width on mobile */
+    max-width: 400px; /* Limit image size */
+    margin-top: var(--spacing-md); /* Space above image */
+}
+
+.proof-image img {
+    width: 100%;
+    height: auto;
+    display: block; /* Remove extra space below image */
+    border-radius: var(--border-radius-md); /* Match card styling */
+    box-shadow: var(--box-shadow-light);
+}
+
+
+.testimonial-section {
+    text-align: center;
+    margin-top: 0; /* Handled by proof-wrapper gap */
+}
+
+.proof-item.testimonial { /* Renamed from .testimonial-item to match HTML */
+    background-color: var(--light-bg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-light);
+    padding: var(--spacing-md);
+    max-width: 700px;
+    margin: 0 auto var(--spacing-sm);
+    position: relative;
+}
+
+.testimonial-img {
+    display: block;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto var(--spacing-sm);
+}
+
+.testimonial-quote {
+    position: relative;
+    font-style: italic;
+    color: var(--text-color);
+    padding: var(--spacing-sm);
+    line-height: 1.6;
+}
+
+.quote-mark {
+    font-size: 4rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    font-family: serif;
+    line-height: 1;
+    z-index: 0; /* Ensure marks are behind text */
+}
+
+.quote-mark.closing {
+    top: auto;
+    bottom: -10px;
+    right: -10px;
+    left: auto;
+}
+
+.testimonial-quote blockquote {
+    margin: 0;
+    padding: 1rem 2rem; /* Give space for quote marks */
+    position: relative;
+    z-index: 1; /* Bring text above marks */
+}
+
+.proof-item cite {
+    display: block;
+    margin-top: var(--spacing-sm);
+    font-weight: bold;
+    color: #666;
+}
+
+/* Plans Section Modern */
+.plans-section.modern {
+    background-color: #000000;
+    text-align: center;
+    color: var(--light-text-color);
+}
+
+.plans-section.modern h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+    color: var(--light-text-color);
+}
+
+.plans-intro {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--spacing-lg);
+}
+
+.plan-cards-container.modern {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr; /* Single column for mobile */
+    gap: var(--spacing-md);
+    padding: 0; /* Remove excess padding, section handles it */
+}
+
+.plan-card {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-light);
+    padding: var(--spacing-md);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.plan-card.popular {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--light-bg); /* Use light-bg for popular border */
+}
+
+.plan-name {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--light-text-color);
+}
+
+.plan-price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--light-text-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.price-unit {
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.plan-features {
+    list-style: none;
+    margin-bottom: var(--spacing-md);
+    text-align: left;
+    width: 80%;
+    color: var(--light-text-color);
+}
+
+.plan-features li {
+    padding: var(--spacing-xs) 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.plan-features li:last-child {
+    border-bottom: none;
+}
+
+.plan-card .btn-secondary.small {
+    background-color: var(--light-bg);
+    color: var(--primary-color);
+    border: none;
+}
+
+.plan-card .btn-secondary.small:hover {
+    background-color: #f0f0f0;
+    color: var(--accent-color);
+}
+
+.plan-card.popular .btn-primary.small {
+    background-color: var(--dark-bg);
+    color: var(--light-text-color);
+}
+
+.plan-card.popular .btn-primary.small:hover {
+    background-color: #333;
+}
+
+/* Contact Section */
+.contact-section.modern {
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    text-align: center;
+}
+
+.contact-content.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 0 auto;
+    gap: var(--spacing-md);
+}
+
+.contact-text-area h2 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+    font-weight: bold;
+}
+
+.contact-text-area p {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-color);
+}
+
+.whatsapp-link.large {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1.1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    text-decoration: none;
+    box-shadow: var(--box-shadow-light);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.whatsapp-link.large:hover {
+    background-color: orange;
+    transform: translateY(-3px);
+}
+
+.whatsapp-link ion-icon {
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
+}
+
+/* Video Player Container */
+.video-player-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio (height / width * 100) */
+    background-color: #000;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: var(--box-shadow-light);
+    max-width: 600px; /* Limit video width */
+    margin: var(--spacing-lg) auto 0; /* Center and add top margin */
+}
+
+.responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+
+/* Footer Modern */
+.main-footer.modern {
+    background-color: var(--dark-bg); /* Using dark-bg for consistency */
+    color: var(--light-text-color);
+    padding: var(--spacing-md) var(--spacing-md); /* Consistent padding */
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column; /* Stack on mobile */
+    gap: var(--spacing-sm);
+    padding: 0; /* Remove excess padding, footer handles it */
+}
+
+.footer-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center logo on mobile */
+    text-align: center;
+}
+
+.footer-logo .wahpuff-logo.small {
+    height: 2rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.footer-logo p {
+    font-size: 0.8rem;
+    color: #ddd;
+}
+
+.footer-nav {
+    display: flex;
+    flex-direction: column; /* Stack nav links on mobile */
+    gap: 0.5rem;
+    margin-top: var(--spacing-sm);
+}
+
+.footer-link {
+    color: #ddd;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: var(--primary-color);
+}
+
+
+/* --- Media Queries for larger screens --- */
+@media (min-width: 768px) {
+    .main-header {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    .main-header .wahpuff-logo {
+        max-height: 50px;
+    }
+
+    .main-nav {
+        display: flex;
+        position: static;
+        flex-direction: row;
+        background-color: transparent;
+        box-shadow: none;
+        width: auto;
+        padding: 0;
+    }
+
+    .main-nav .nav-link {
+        padding: 0 var(--spacing-sm);
+        border-bottom: none;
+        font-size: 1em;
+    }
+
+    .hamburger-icon {
+        display: none;
+    }
+
+    /* Hero Section */
+    .hero-section.modern.background-image-hero {
+        padding: 8rem var(--spacing-lg); /* More padding on desktop */
+    }
+
+    .hero-text h1 {
+        font-size: 3.5rem; /* Larger heading */
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem; /* Larger subtitle */
+    }
+
+    /* Problem Solution Section */
+    .problem-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Objections Section */
+    .objections-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns for tablets */
+    }
+
+    /* Proof Section */
+    .proof-content {
+        flex-direction: row; /* Side-by-side on desktop */
+        justify-content: center;
+        align-items: flex-start; /* Align top */
+        gap: var(--spacing-lg);
+    }
+
+    .proof-points {
+        width: 50%; /* Distribute width */
+        margin-bottom: 0;
+    }
+
+    .proof-image {
+        width: 50%;
+        margin-top: 0;
+    }
+
+    /* Plans Section */
+    .plan-cards-container.modern {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+    }
+
+    /* Footer */
+    .footer-content {
+        flex-direction: row; /* Row on desktop */
+    }
+
+    .footer-logo {
+        align-items: flex-start; /* Align logo to left */
+    }
+
+    .footer-nav {
+        flex-direction: row; /* Row on desktop */
+        margin-top: 0;
+    }
+}
+/* --- Nueva Sección Newsletter --- */
+.newsletter-section {
+    background-color: var(--secondary-color); /* Un color que contraste o complemente */
+    padding: var(--spacing-xl) var(--spacing-md);
+    text-align: center;
+    color: var(--light-text-color);
+}
+
+.newsletter-section h2 {
+    font-size: 2.2rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--light-text-color);
+}
+
+.newsletter-section .section-description {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-lg);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+/* --- Estilos del Formulario de Contacto --- */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    max-width: 500px; /* Para que el formulario no sea demasiado ancho */
+    margin: 0 auto; /* Centrar el formulario */
+    padding: var(--spacing-lg);
+    background-color: var(--light-bg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-light);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left; /* Alinear etiquetas a la izquierda */
+}
+
+.form-group label {
+    margin-bottom: var(--spacing-xs);
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group textarea {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-size: 1rem;
+    width: 100%; /* Ocupar el 100% del contenedor */
+    box-sizing: border-box; /* Incluir padding y border en el ancho */
+}
+
+.form-group textarea {
+    resize: vertical; /* Permitir redimensionar verticalmente */
+    min-height: 100px;
+}
+
+.contact-form .btn-primary {
+    width: 100%; /* Hacer el botón de enviar full width dentro del formulario */
+    padding: 1rem 2rem; /* Ajustar el padding para el botón */
+    font-size: 1.1rem;
+    margin-top: var(--spacing-sm); /* Espacio extra arriba del botón */
+}
+
+/* --- Media Queries para el Formulario (Desktop) --- */
+@media (min-width: 768px) {
+    .newsletter-section h2 {
+        font-size: 2.8rem;
+    }
+
+    .contact-form {
+        padding: var(--spacing-xl);
+    }
+}
+
+@media (min-width: 1024px) {
+    /* Objections Section */
+    .objections-grid {
+        grid-template-columns: repeat(4, 1fr); /* Four columns for larger desktops */
+    }
+}
+
+@media (min-width: 1200px) {
+    .main-header {
+        padding: var(--spacing-md) var(--spacing-xl);
+    }
+
+    .hero-section.modern.background-image-hero {
+        padding: 10rem var(--spacing-xl);
+    }
+}
