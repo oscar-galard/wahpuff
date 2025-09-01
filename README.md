@@ -10,8 +10,8 @@ Este proyecto se ha hecho público con el objetivo de servir como un recurso y u
 
 **Backend:**
 
-- **Laravel 10:** El framework de PHP más popular para el desarrollo de aplicaciones web.
-- **Laravel Sanctum:** Para la autenticación API, aunque se ha considerado el uso de JWT para ciertas funcionalidades.
+- **Laravel 12:** El framework de PHP más popular para el desarrollo de aplicaciones web.
+- **Autenticación:** Para la autenticación API, aunque se ha considerado el uso de JWT.
 
 **Frontend:**
 
@@ -38,7 +38,6 @@ Aquí podrás ver ejemplos prácticos de:
 
 - La integración fluida de Laravel y React con Inertia.js.
 - Cómo estructurar una aplicación a gran escala.
-- Ejemplos de autenticación con Laravel Sanctum.
 - Manejo de rutas y componentes para una experiencia de usuario tipo SPA.
 
 ## 📝 Cómo Empezar
