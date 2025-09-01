@@ -1,66 +1,80 @@
-# Project Wahpuff
-### Folder structure
-pp/
-├── Models/
-│   ├── User.php
-│   ├── Course.php
-│   ├── CourseVideo.php
-│   ├── Plan.php
-│   ├── Subscription.php
-│   ├── Payment.php
-│   ├── Appointment.php
-│   ├── Message.php
-│   └── DiscountCode.php
+# Wahpuff - Plataforma de Clases de Guitarra 🎸
 
-├── Http/
-│   ├── Controllers/
-│   │   ├── Auth/
-│   │   │   ├── LoginController.php
-│   │   │   └── RegisterController.php
-│   │   ├── CourseController.php
-│   │   ├── SubscriptionController.php
-│   │   ├── PaymentController.php
-│   │   ├── AppointmentController.php
-│   │   └── MessageController.php
-│   │
-│   └── Requests/
-│       ├── StoreSubscriptionRequest.php
-│       ├── StoreAppointmentRequest.php
-│       ├── StoreMessageRequest.php
-│       └── ApplyDiscountCodeRequest.php
+¡Bienvenido al repositorio de Wahpuff!
 
-├── Services/
-│   └── Payments/
-│       ├── PaymentServiceInterface.php
-│       ├── PaypalService.php
-│       └── StripeService.php
+Wahpuff es una plataforma de educación musical en línea, diseñada para ofrecer clases de guitarra a estudiantes de todos los niveles. Desde principiantes que quieren tocar sus primeras canciones hasta guitarristas intermedios que buscan perfeccionar su técnica y teoría musical.
 
-├── Actions/
-│   └── Courses/
-│       └── FetchCoursesAction.php
+Este proyecto se ha hecho público con el objetivo de servir como un recurso y una referencia para otros desarrolladores. Es un ejemplo funcional de cómo construir una plataforma robusta y moderna para cursos, combinando tecnologías de vanguardia en el ecosistema web.
 
-└── Policies/
-    ├── CoursePolicy.php
-    └── AppointmentPolicy.php
+## 🛠️ Tecnologías Utilizadas
 
-### URL links for images.
-optimizing the images with imagemagick, pngquant, also resizing for each purpose.
-for hosting the images and get the url for the db, we will use https://www.imghippo.com/ 
+**Backend:**
 
-```bash
-#!/bin/bash
+- **Laravel 10:** El framework de PHP más popular para el desarrollo de aplicaciones web.
+- **Laravel Sanctum:** Para la autenticación API, aunque se ha considerado el uso de JWT para ciertas funcionalidades.
 
-input_dir=~/Pictures/webwaImgs
-output_dir=~/projects/output_images
+**Frontend:**
 
-mkdir -p "$output_dir"
+- **React:** La biblioteca de JavaScript para construir la interfaz de usuario.
+- **Inertia.js:** El "pegamento" que une el frontend de React con el backend de Laravel, permitiendo crear una SPA (Single Page Application) sin la complejidad de las APIs tradicionales.
+- **Tailwind CSS:** El framework de CSS para un diseño rápido y flexible.
 
-while IFS= read -r filename; do
-    input_path="$input_dir/$filename"
-    output_path="$output_dir/$filename"
-    magick "$input_path" -strip -quality 90% PNG8:- | pngquant --speed 1 --quality 65-80 -o "$output_path" -
-done < file_list.txt
-```
-https://www.imghippo.com/i/Jtro3221gGI.png
+**Gestión de Dependencias:**
 
-https://www.imghippo.com/i/PAKF1630ljc.png
+- **Vite:** Un bundler de frontend de nueva generación, que ofrece un desarrollo rápido.
+
+## 🚀 Características Clave
+
+- **Autenticación de Usuario:** Registro y login de usuarios.
+- **Clases de Guitarra:** Gestión de cursos con videos y materiales de apoyo.
+- **Comunidad y Soporte:** *(En desarrollo)*
+- **Integración de Pagos:** Conexión con la API de PayPal para el procesamiento de pagos.
+
+## 💡 ¿Por Qué Publicar este Repositorio?
+
+Mi objetivo al hacer este proyecto de código abierto es que sirva de guía. Si estás pensando en crear una plataforma de cursos, un sitio para membresías o cualquier aplicación web interactiva, puedes usar este código como referencia.
+
+Aquí podrás ver ejemplos prácticos de:
+
+- La integración fluida de Laravel y React con Inertia.js.
+- Cómo estructurar una aplicación a gran escala.
+- Ejemplos de autenticación con Laravel Sanctum.
+- Manejo de rutas y componentes para una experiencia de usuario tipo SPA.
+
+## 📝 Cómo Empezar
+
+Si quieres explorar el código, clonarlo y ejecutarlo en tu entorno local, sigue los siguientes pasos:
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/wahpuff.git
+   ```
+2. Instala las dependencias de Composer:
+   ```bash
+   composer install
+   ```
+3. Instala las dependencias de Node:
+   ```bash
+   npm install
+   ```
+4. Copia el archivo de entorno y genera la clave de la aplicación:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+5. Configura tu base de datos en el archivo `.env`.
+6. Ejecuta las migraciones:
+   ```bash
+   php artisan migrate
+   ```
+7. Inicia el servidor de desarrollo:
+   ```bash
+   npm run dev
+   php artisan serve
+   ```
+
+¡Ahora puedes acceder a la aplicación en [http://localhost:8000](http://localhost:8000)!
+
+## 🙏 Contribuciones
+
+Las contribuciones son bienvenidas. Si encuentras un bug, tienes una sugerencia o quieres mejorar alguna funcionalidad, no dudes en abrir un issue o enviar un pull request.
