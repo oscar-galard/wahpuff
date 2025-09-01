@@ -1,0 +1,164 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Inertia\Inertia;
+use App\Models\Plan; // Necesario para obtener el precio del plan
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+
+class PaymentController extends Controller
+{
+    private string $paypalBaseUrl;
+    private string $clientId;
+    private string $clientSecret;
+
+    public function __construct()
+    {
+        $this->clientId = config('services.paypal.client_id');
+        $this->clientSecret = config('services.paypal.client_secret');
+        
+        // Inicializa la URL base de PayPal según el modo (live o sandbox)
+        $this->paypalBaseUrl = config('services.paypal.mode') === 'live' 
+                               ? 'https://api-m.paypal.com' 
+                               : 'https://api-m.sandbox.paypal.com';
+    }
+
+    /**
+     * Muestra la página de pago con los planes disponibles.
+     * @return \Inertia\Response
+     */
+    public function showPaymentPage()
+    {
+        $plans = Plan::all(); // Obtiene todos los planes de la base de datos
+        
+        return Inertia::render('PaymentPage', [
+            'plans' => $plans,
+            'paypalClientId' => config('services.paypal.client_id'),
+            // 'paypalMode' ya no se necesita en el frontend para el SDK
+            // 'paypalBaseUrl' tampoco es estrictamente necesario en el frontend para el SDK
+        ]);
+    }
+
+    /**
+     * Crea una orden de pago en PayPal.
+     * Solo requiere el ID del plan.
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createOrder(Request $request)
+    {
+        // Valida que se haya enviado un plan_id válido
+        $request->validate([
+            'plan_id' => 'required|exists:plans,id',
+        ]);
+        
+        $plan = Plan::findOrFail($request->plan_id); // Encuentra el plan por su ID
+        $amount = $plan->price; // El monto es directamente el precio del plan
+
+        try {
+            // Obtiene el token de acceso de PayPal
+            $accessToken = $this->getAccessToken();
+            
+            // Realiza la solicitud a la API de PayPal para crear la orden
+            $response = Http::withToken($accessToken)
+                ->post("{$this->paypalBaseUrl}/v2/checkout/orders", [
+                    'intent' => 'CAPTURE', // La intención es capturar el pago inmediatamente
+                    'purchase_units' => [
+                        [
+                            'amount' => [
+                                'currency_code' => 'MXN', // Código de moneda (ajusta si es necesario)
+                                'value' => number_format($amount, 2, '.', ''), // Formatea el monto a dos decimales
+                            ],
+                            'custom_id' => $plan->id, // Puedes usar esto para identificar el plan en el lado de PayPal
+                        ],
+                    ],
+                ]);
+
+            // Si la respuesta de PayPal es exitosa, devuelve el ID de la orden
+            if ($response->successful()) {
+                return response()->json(['id' => $response->json('id')]); 
+            }
+
+            // Registra el error si la API de PayPal falla al crear la orden
+            Log::error('PayPal API Error (Create Order):', ['response' => $response->json()]);
+            return response()->json([
+                'error' => $response->json('message') ?? 'Error de PayPal al crear la orden.',
+                'details' => $response->json() 
+            ], $response->status());
+
+        } catch (\Exception $e) {
+            // Manejo de errores generales durante la creación de la orden
+            Log::error('Error al crear orden de PayPal: ' . $e->getMessage());
+            return response()->json(['error' => 'Error interno del servidor.', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Completa (captura) una orden de pago en PayPal.
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function completeOrder(Request $request)
+    {
+        // Valida que se haya enviado el ID de la orden de PayPal
+        $request->validate(['orderID' => 'required|string']);
+
+        try {
+            // Obtiene el token de acceso de PayPal
+            $accessToken = $this->getAccessToken();
+
+            // Registra información para depuración
+            Log::info('Attempting to capture PayPal order', [
+                'orderID' => $request->orderID,
+                'url' => "{$this->paypalBaseUrl}/v2/checkout/orders/{$request->orderID}/capture"
+            ]);
+
+            // Realiza la solicitud a la API de PayPal para capturar la orden
+            $response = Http::withToken($accessToken)
+                ->withHeaders([
+                    'Content-Type' => 'application/json'
+                ])
+                ->post("{$this->paypalBaseUrl}/v2/checkout/orders/{$request->orderID}/capture", (object)[]);
+            
+            // Si la captura fue exitosa y el estado es 'COMPLETED'
+            if ($response->successful() && $response->json('status') === 'COMPLETED') {
+                // No se guardan suscripciones ni pagos en la base de datos en esta versión simplificada
+                return response()->json(['status' => 'success', 'message' => 'Pago completado exitosamente en PayPal.']);
+            }
+            
+            // Si la captura no fue exitosa o el estado no es 'COMPLETED'
+            Log::error('PayPal API Error (Capture Order):', ['response' => $response->json()]);
+            return response()->json([
+                'error' => $response->json('message') ?? 'No se pudo completar el pago.',
+                'details' => $response->json()
+            ], $response->status());
+
+        } catch (\Exception $e) {
+            // Manejo de errores generales durante la captura de la orden
+            Log::error('Error al completar orden de PayPal: ' . $e->getMessage());
+            return response()->json(['error' => 'Error interno del servidor.', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Obtiene un token de acceso de la API de PayPal.
+     * @return string El token de acceso
+     * @throws \Illuminate\Http\Client\RequestException Si falla la obtención del token
+     */
+    private function getAccessToken(): string
+    {
+        // Realiza la solicitud para obtener el token de acceso
+        $response = Http::asForm()
+            ->withBasicAuth($this->clientId, $this->clientSecret)
+            ->post("{$this->paypalBaseUrl}/v1/oauth2/token", [
+                'grant_type' => 'client_credentials', // Tipo de subvención para credenciales de cliente
+            ]);
+        $response->throw(); // Lanza una excepción si la solicitud no fue exitosa (código de estado >= 400)
+        return $response->json('access_token'); // Devuelve el token de acceso
+    }
+
+    // Se han eliminado los métodos createSubscription y createPayment
+    // ya que no se requieren en esta versión simplificada.
+}

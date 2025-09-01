@@ -9,8 +9,10 @@ class Payment extends Model
 {
     protected $fillable = [
         'user_id',
+        'plan_id',
         'amount',
         'payment_method',
+        'transaction_id',
         'successful',
         'paid_at',
     ];
@@ -23,5 +25,9 @@ class Payment extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    public function plan(): BelongsTo
+    {
+        return $this->belongsTo(Plan::class);
     }
 }

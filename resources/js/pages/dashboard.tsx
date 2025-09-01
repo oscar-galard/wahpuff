@@ -21,7 +21,7 @@ export default function Dashboard() {
 					{courses?.map((course, idx) => (
 						<Link
 							key={idx}
-							//href={route('courses.content.show', course.id)}
+							href={route('courses.content.show', course.id)}
 							className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border group"
 						>
 							<img

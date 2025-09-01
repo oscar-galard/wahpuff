@@ -1,14 +1,10 @@
-import AppLogoIcon from './app-logo-icon';
+import { Link } from '@inertiajs/react';
 
 export default function AppLogo() {
     return (
-        <>
-            <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-                <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
-            </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-tight font-semibold">Laravel Starter Kit</span>
-            </div>
-        </>
+        <Link href="/" className="flex items-center">
+            <img src="/images/wahpuff-logox170.png" alt="Wahpuff Logo" className="h-10 w-auto" />
+            <span className="ml-2 text-lg font-semibold group-data-[collapsed=true]:hidden">Wahpuff</span>
+        </Link>
     );
 }
