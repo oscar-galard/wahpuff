@@ -911,6 +911,7 @@ section {
     font-size: 1rem;
     width: 100%; /* Ocupar el 100% del contenedor */
     box-sizing: border-box; /* Incluir padding y border en el ancho */
+    color: var(--text-color);
 }
 
 .form-group textarea {

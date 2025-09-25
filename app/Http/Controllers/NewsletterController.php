@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\NewsletterSubscription;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class NewsletterController extends Controller
 {
@@ -18,6 +18,6 @@ class NewsletterController extends Controller
 
         NewsletterSubscription::create($request->all());
 
-        return response()->json(['message' => 'Successfully subscribed to the newsletter!'], 201);
+        return back()->with('success', 'Successfully subscribed to the newsletter!');
     }
 }

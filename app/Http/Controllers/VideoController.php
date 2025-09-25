@@ -9,13 +9,16 @@ class VideoController extends Controller
 {
     public function videoList($course)
     {
-    $videos = CourseVideo::where('course_id', $course)
-        ->orderBy('id')
-        ->get();
+        $videos = CourseVideo::where('course_id', $course)
+            ->with(['comments' => function ($query) {
+                $query->latest()->with('user:id,name');
+            }])
+            ->orderBy('id')
+            ->get();
 
-    return Inertia::render('VideoContent', [
-        'contents' => $videos,
-    ]);
+        return Inertia::render('VideoContent', [
+            'contents' => $videos,
+        ]);
     }
 }
 

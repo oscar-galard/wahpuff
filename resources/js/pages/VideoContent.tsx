@@ -1,10 +1,9 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
-import { useState, useEffect, FormEventHandler } from 'react';
+import { type BreadcrumbItem, type SharedData } from '@/types';
+import { Head, usePage, useForm } from '@inertiajs/react';
+import { useState, FormEventHandler } from 'react';
 import React from 'react';
 import ReactPlayer from 'react-player';
-import axios from 'axios';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -27,38 +26,27 @@ interface Video {
     id: number;
     title: string;
     url: string;
+    comments: Comment[];
 }
 
 export default function VideoContent() {
     const { contents } = usePage().props as { contents: Video[] };
     const [activeVideo, setActiveVideo] = useState<Video | null>(contents.length > 0 ? contents[0] : null);
-    const [comments, setComments] = useState<Comment[]>([]);
-    const [newComment, setNewComment] = useState('');
 
-    useEffect(() => {
-        if (activeVideo) {
-            axios.get(`/api/videos/${activeVideo.id}/comments`)
-                .then(response => {
-                    setComments(response.data);
-                })
-                .catch(error => {
-                    console.error("Error fetching comments:", error);
-                });
-        }
-    }, [activeVideo]);
+    const { data, setData, post, processing, errors, reset } = useForm({
+        body: '',
+    });
 
     const handleCommentSubmit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        if (!activeVideo || !newComment.trim()) return;
+        if (!activeVideo) return;
 
-        axios.post(`/api/videos/${activeVideo.id}/comments`, { body: newComment })
-            .then(response => {
-                setComments(prevComments => [response.data, ...prevComments]);
-                setNewComment('');
-            })
-            .catch(error => {
-                console.error("Error posting comment:", error);
-            });
+        post(route('videos.comments.store', { video: activeVideo.id }), {
+            preserveScroll: true,
+            onSuccess: () => {
+                reset();
+            },
+        });
     };
 
     return (
@@ -114,16 +102,17 @@ export default function VideoContent() {
                                             <textarea
                                                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                                                 rows={3}
-                                                value={newComment}
-                                                onChange={(e) => setNewComment(e.target.value)}
+                                                value={data.body}
+                                                onChange={(e) => setData('body', e.target.value)}
                                                 placeholder="Escribe tu comentario..."
                                             ></textarea>
-                                            <button type="submit" className="mt-2 px-4 py-2 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                                            {errors.body && <div className='text-red-500 text-xs mt-1'>{errors.body}</div>}
+                                            <button type="submit" className="mt-2 px-4 py-2 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" disabled={processing}>
                                                 Publicar Comentario
                                             </button>
                                         </form>
                                         <div className="space-y-4">
-                                            {comments.map(comment => (
+                                            {activeVideo?.comments.map(comment => (
                                                 <div key={comment.id} className="flex items-start space-x-3">
                                                     <div className="flex-shrink-0">
                                                         <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-600">
@@ -137,7 +126,7 @@ export default function VideoContent() {
                                                     </div>
                                                 </div>
                                             ))}
-                                            {comments.length === 0 && (
+                                            {activeVideo?.comments.length === 0 && (
                                                 <p className="text-center text-gray-500">No hay comentarios aún. ¡Sé el primero en comentar!</p>
                                             )}
                                         </div>

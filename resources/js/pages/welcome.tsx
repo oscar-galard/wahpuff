@@ -1,6 +1,7 @@
 import { type SharedData } from '@/types';
 import { Head, Link, usePage, useForm } from '@inertiajs/react';
 import React, { useState, useEffect, FormEventHandler } from 'react';
+import Swal from 'sweetalert2';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
@@ -14,9 +15,27 @@ export default function Welcome() {
 
     const handleNewsletterSubmit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('api.newsletter.subscribe'), {
+        post(route('newsletter.subscribe'), {
             preserveScroll: true,
-            onSuccess: () => reset(),
+            onSuccess: () => {
+                reset();
+                Swal.fire({
+                    title: '¡Suscripción exitosa!',
+                    text: 'Gracias por suscribirte a nuestro boletín. Pronto recibirás nuestras ofertas especiales.',
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Aceptar'
+                });
+            },
+            onError: (errors) => {
+                Swal.fire({
+                    title: 'Error en la suscripción',
+                    text: 'Hubo un problema al suscribirte. Por favor, inténtalo nuevamente.',
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
         });
     };
 
@@ -270,30 +289,24 @@ export default function Welcome() {
 								Recibe noticias sobre nuevos cursos y <strong>¡Descuentos Especiales!</strong>
 							</p>
 
-                            {recentlySuccessful ? (
-                                <div className="text-center text-green-600 font-bold p-4 bg-green-100 rounded-lg">
-                                    ¡Gracias por suscribirte! Revisa tu correo para futuras noticias.
+                            <form onSubmit={handleNewsletterSubmit} className="contact-form">
+                                <div className="form-group">
+                                    <label htmlFor="name">Nombre:</label>
+                                    <input type="text" id="name" name="name" value={data.name} onChange={(e) => setData('name', e.target.value)} required />
+                                    {errors.name && <div className='text-red-500 text-xs mt-1'>{errors.name}</div>}
                                 </div>
-                            ) : (
-                                <form onSubmit={handleNewsletterSubmit} className="contact-form">
-                                    <div className="form-group">
-                                        <label htmlFor="name">Nombre:</label>
-                                        <input type="text" id="name" name="name" value={data.name} onChange={(e) => setData('name', e.target.value)} required />
-                                        {errors.name && <div className='text-red-500 text-xs mt-1'>{errors.name}</div>}
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="email">Email:</label>
-                                        <input type="email" id="email" name="email" value={data.email} onChange={(e) => setData('email', e.target.value)} required />
-                                        {errors.email && <div className='text-red-500 text-xs mt-1'>{errors.email}</div>}
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="phone">Teléfono (opcional):</label>
-                                        <input type="tel" id="phone" name="phone" value={data.phone} onChange={(e) => setData('phone', e.target.value)} />
-                                        {errors.phone && <div className='text-red-500 text-xs mt-1'>{errors.phone}</div>}
-                                    </div>
-                                    <button type="submit" className="btn-primary" disabled={processing}>Enviar</button>
-                                </form>
-                            )}
+                                <div className="form-group">
+                                    <label htmlFor="email">Email:</label>
+                                    <input type="email" id="email" name="email" value={data.email} onChange={(e) => setData('email', e.target.value)} required />
+                                    {errors.email && <div className='text-red-500 text-xs mt-1'>{errors.email}</div>}
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="phone">Teléfono (opcional):</label>
+                                    <input type="tel" id="phone" name="phone" value={data.phone} onChange={(e) => setData('phone', e.target.value)} />
+                                    {errors.phone && <div className='text-red-500 text-xs mt-1'>{errors.phone}</div>}
+                                </div>
+                                <button type="submit" className="btn-primary" disabled={processing}>Enviar</button>
+                            </form>
 						</div>
 					</section>
 				</main>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, usePage, router } from '@inertiajs/react';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { Link } from '@inertiajs/react';
+import Swal from 'sweetalert2';
 
 const GuestLayout = ({ children }) => (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
@@ -15,41 +15,11 @@ const PaymentPage = () => {
     const paypalClientId = props.paypalClientId;
 
     const [selectedPlan, setSelectedPlan] = useState(plans[0]);
-    const [discountCode, setDiscountCode] = useState('');
     const [finalPrice, setFinalPrice] = useState(selectedPlan?.price || 0);
-    const [paymentStatus, setPaymentStatus] = useState('idle'); // idle, success, error
 
     useEffect(() => {
         setFinalPrice(selectedPlan?.price || 0);
     }, [selectedPlan]);
-
-    // Function to get JWT token from storage
-    const getAuthToken = () => {
-        return localStorage.getItem('jwt_token'); // Assuming you store the token here after login
-    }
-
-    if (paymentStatus === 'success') {
-        return (
-            <GuestLayout>
-                <Head title="Pago Exitoso" />
-                <div className="max-w-lg mx-auto my-12 bg-white rounded-lg shadow-xl p-8 text-center">
-                    <div className="mb-4">
-                        <svg className="mx-auto h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h1 className="text-2xl font-bold text-gray-800 mb-2">¡Pago completado con éxito!</h1>
-                    <p className="text-gray-600 mb-6">Gracias por tu compra. Tu suscripción ha sido activada.</p>
-                    <Link
-                        href={route('dashboard')}
-                        className="px-6 py-2 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600"
-                    >
-                        Ir al Dashboard
-                    </Link>
-                </div>
-            </GuestLayout>
-        );
-    }
 
     return (
         <GuestLayout>
@@ -100,40 +70,27 @@ const PaymentPage = () => {
                                     <PayPalButtons
                                         style={{ layout: 'vertical', color: 'blue', shape: 'pill', label: 'pay' }}
                                         createOrder={(data, actions) => {
-                                            const token = getAuthToken();
-                                            return fetch('/api/payments/create', {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json',
-                                                    'Authorization': `Bearer ${token}`,
-                                                },
-                                                body: JSON.stringify({
-                                                    plan_id: selectedPlan.id,
-                                                    discount_code: discountCode,
-                                                })
-                                            })
-                                            .then(response => response.json())
-                                            .then(order => order.id);
+                                            return actions.order.create({
+                                                purchase_units: [
+                                                    {
+                                                        amount: {
+                                                            value: finalPrice.toString(),
+                                                        },
+                                                    },
+                                                ],
+                                            });
                                         }}
                                         onApprove={(data, actions) => {
-                                            const token = getAuthToken();
-                                            return fetch('/api/payments/complete', {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json',
-                                                    'Authorization': `Bearer ${token}`,
-                                                },
-                                                body: JSON.stringify({ orderID: data.orderID })
-                                            })
-                                            .then(response => response.json())
-                                            .then(orderData => {
-                                                if (orderData.status === 'success') {
-                                                    setPaymentStatus('success');
-                                                } else {
-                                                    setPaymentStatus('error');
-                                                    console.error('Error del backend al completar el pago:', orderData.error);
-                                                    alert('Error al completar el pago. Intenta de nuevo.');
-                                                }
+                                            return actions.order.capture().then(() => {
+                                                Swal.fire({
+                                                    title: '¡Pago completado con éxito!',
+                                                    text: 'Tu suscripción ha sido activada. Serás redirigido a tu dashboard.',
+                                                    icon: 'success',
+                                                    confirmButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Aceptar'
+                                                }).then(() => {
+                                                    router.visit(route('dashboard'));
+                                                });
                                             });
                                         }}
                                     />

@@ -17,7 +17,7 @@ class CourseSeeder extends Seeder
                [
                    'title' => 'Guitarra en 7 dias',
                    'description' => 'Unete al reto de 7 dias para aprender a tocar guitarra, y aprende los secretos para avanzar en tiempo record.',
-                   'image_url' => 'https://www.imghippo.com/i/Jtro3221gGI.png',
+                   'image_url' => '/images/curso-basico.png',
                    'is_premium' => false,
                    'created_at' => now(),
                    'updated_at' => now(),
@@ -25,7 +25,7 @@ class CourseSeeder extends Seeder
                [
                    'title' => 'Más Allá de los Acordes Bootcamp',
                    'description' => 'Aprende mas sobre acordes, escalas y entiende la escencia de la guitarra electrica y acustica.',
-                   'image_url' => 'https://www.imghippo.com/i/PAKF1630ljc.png',
+                   'image_url' => '/images/oferta.png',
                    'is_premium' => true,
                    'created_at' => now(),
                    'updated_at' => now(),
