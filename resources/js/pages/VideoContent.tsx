@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type SharedData } from '@/types';
+import { type BreadcrumbItem } from '@/types';
 import { Head, usePage, useForm } from '@inertiajs/react';
 import { useState, FormEventHandler } from 'react';
 import React from 'react';
@@ -32,8 +32,9 @@ interface Video {
 export default function VideoContent() {
     const { contents } = usePage().props as { contents: Video[] };
     const [activeVideo, setActiveVideo] = useState<Video | null>(contents.length > 0 ? contents[0] : null);
+    const [showSuccess, setShowSuccess] = useState(false);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, processing, errors, reset } = useForm({
         body: '',
     });
 
@@ -41,11 +42,39 @@ export default function VideoContent() {
         e.preventDefault();
         if (!activeVideo) return;
 
-        post(route('videos.comments.store', { video: activeVideo.id }), {
-            preserveScroll: true,
-            onSuccess: () => {
-                reset();
+        // Use fetch to make the API call instead of inertia post
+        fetch(route('videos.comments.store', { video: activeVideo.id }), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
             },
+            body: JSON.stringify({
+                body: data.body,
+            }),
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.comment) {
+                // Update the active video's comments with the new comment
+                const updatedActiveVideo = {
+                    ...activeVideo,
+                    comments: [result.comment, ...activeVideo.comments]
+                };
+                
+                setActiveVideo(updatedActiveVideo);
+                
+                reset();
+                setShowSuccess(true);
+                // Hide the success message after 3 seconds
+                setTimeout(() => {
+                    setShowSuccess(false);
+                }, 3000);
+            }
+        })
+        .catch(error => {
+            console.error('Error posting comment:', error);
         });
     };
 
@@ -107,6 +136,11 @@ export default function VideoContent() {
                                                 placeholder="Escribe tu comentario..."
                                             ></textarea>
                                             {errors.body && <div className='text-red-500 text-xs mt-1'>{errors.body}</div>}
+                                            {showSuccess && (
+                                                <div className="mt-2 p-2 bg-green-100 text-green-700 rounded-md">
+                                                    ¡Comentario publicado exitosamente!
+                                                </div>
+                                            )}
                                             <button type="submit" className="mt-2 px-4 py-2 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" disabled={processing}>
                                                 Publicar Comentario
                                             </button>

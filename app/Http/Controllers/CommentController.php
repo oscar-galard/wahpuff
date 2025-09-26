@@ -18,12 +18,15 @@ class CommentController extends Controller
             'body' => 'required|string|max:2500',
         ]);
 
-        $video->comments()->create([
+        $comment = $video->comments()->create([
             'body' => $request->body,
             'user_id' => $request->user()->id,
         ]);
 
-        return back();
+        return response()->json([
+            'message' => 'Comment created successfully',
+            'comment' => $comment->load('user') // Load the user relationship to get user info
+        ], 201);
     }
 
     public function destroy(Request $request, Comment $comment)
@@ -35,6 +38,8 @@ class CommentController extends Controller
         
         $comment->delete();
         
-        return back();
+        return response()->json([
+            'message' => 'Comment deleted successfully'
+        ]);
     }
 }
