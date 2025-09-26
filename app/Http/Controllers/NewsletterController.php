@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\NewsletterSubscription;
+use App\Notifications\NewsletterSubscriptionNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class NewsletterController extends Controller
@@ -16,7 +18,10 @@ class NewsletterController extends Controller
             'phone' => 'nullable|string|max:20',
         ]);
 
-        NewsletterSubscription::create($request->all());
+        $subscription = NewsletterSubscription::create($request->all());
+
+        // Send confirmation email
+        $subscription->notify(new NewsletterSubscriptionNotification($subscription));
 
         return back()->with('success', 'Successfully subscribed to the newsletter!');
     }

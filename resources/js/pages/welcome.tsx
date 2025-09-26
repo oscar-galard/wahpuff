@@ -21,7 +21,7 @@ export default function Welcome() {
                 reset();
                 Swal.fire({
                     title: '¡Suscripción exitosa!',
-                    text: 'Gracias por suscribirte a nuestro boletín. Pronto recibirás nuestras ofertas especiales.',
+                    text: 'Gracias por suscribirte a nuestro boletín. Checa tu correo para ver las ofertas especiales que tenemos para ti.',
                     icon: 'success',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Aceptar'
@@ -30,7 +30,7 @@ export default function Welcome() {
             onError: (errors) => {
                 Swal.fire({
                     title: 'Error en la suscripción',
-                    text: 'Hubo un problema al suscribirte. Por favor, inténtalo nuevamente.',
+                    text: 'Hubo un problema al suscribirte. Por favor, inténtalo nuevamente mas tarde.',
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Aceptar'

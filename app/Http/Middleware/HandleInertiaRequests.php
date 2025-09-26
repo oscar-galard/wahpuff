@@ -43,8 +43,12 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
-            'auth' => [
+            'auth' => $request->user() ? [
                 'user' => $request->user(),
+                'mustVerifyEmail' => $request->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $request->user()->hasVerifiedEmail(),
+            ] : [
+                'user' => null,
+                'mustVerifyEmail' => false,
             ],
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),
