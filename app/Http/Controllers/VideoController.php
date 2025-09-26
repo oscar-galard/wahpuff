@@ -16,6 +16,15 @@ class VideoController extends Controller
             ->orderBy('id')
             ->get();
 
+        // Check if the course has any videos
+        if ($videos->isEmpty()) {
+            // Render a page with a message indicating no content is available yet
+            return Inertia::render('VideoContent', [
+                'contents' => $videos,
+                'noContentMessage' => 'Por ahora no hay contenido en esta pagina, seguimos trabajando para completar este curso',
+            ]);
+        }
+
         return Inertia::render('VideoContent', [
             'contents' => $videos,
         ]);
