@@ -16,6 +16,14 @@ class PlanSeeder extends Seeder
         DB::table('plans')->insert([
             [
                 'name' => 'Descubre',
+                'price' => 399.00,
+                'monthly_lessons' => 4,
+                'monthly_sessions' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Impulsa',
                 'price' => 699.00,
                 'monthly_lessons' => 4,
                 'monthly_sessions' => 2,
@@ -23,15 +31,7 @@ class PlanSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'impulsa',
-                'price' => 699.00,
-                'monthly_lessons' => 4,
-                'monthly_sessions' => 2,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'domina',
+                'name' => 'Domina',
                 'price' => 999.00,
                 'monthly_lessons' => 4,
                 'monthly_sessions' => 4,
