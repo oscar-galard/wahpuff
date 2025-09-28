@@ -33,7 +33,7 @@ class CourseSeeder extends Seeder
                [
                    'title' => 'El lado oscuro: Desbloquea tu shred',
                    'description' => 'Lleva tu tecnica y concocimiento al siguiente nivel, tecnicas avanzadas, y composicion nivel pro.',
-                   'image_url' => 'http://example.com/images/data-structures.jpg',
+                   'image_url' => '/images/shred-side.png',
                    'is_premium' => true,
                    'created_at' => now(),
                    'updated_at' => now(),
