@@ -4,10 +4,10 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import AnimatedDashboardPlaceholder from '@/components/AnimatedDashboardPlaceholder';
 
 const breadcrumbs: BreadcrumbItem[] = [
-	{
-		title: 'Dashboard',
-		href: '/dashboard',
-	},
+    {
+        title: 'Cursos',
+        href: '/dashboard',
+    }
 ];
 
 interface Course {
@@ -21,7 +21,7 @@ export default function Dashboard() {
 	const { courses } = usePage().props as { courses: Course[] };
 	return (
 		<AppLayout breadcrumbs={breadcrumbs}>
-			<Head title="Dashboard" />
+			<Head title="Cursos" />
 			<div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
 				<div className="grid auto-rows-min gap-4 md:grid-cols-3">
 				{courses?.map((course, idx) => (

@@ -83,32 +83,29 @@ export default function Welcome() {
 
 					{/* Navegación principal - Clases actualizadas para CSS externo */}
 					<nav className={`main-nav modern ${isOpen ? 'is-open' : ''}`}>
-						{auth.user ? (
-							<Link className="nav-link"
-								href={route('dashboard')}
-								onClick={() => setIsOpen(false)}
-							>
-								Dashboard
-							</Link>
-						) : (
-							<>
-								<Link
-									href={route('login')}
-									className="nav-link"
-									onClick={() => setIsOpen(false)}
-								>
-									Ingresar
-								</Link>
-								<Link
-									href={route('register')}
-									className="nav-link"
-									onClick={() => setIsOpen(false)}
-								>
-									Registrarse
-								</Link>
-							</>
-						)}
-					</nav>
+            {auth.user ? (
+                <Link href={route('dashboard')} className="nav-link" onClick={() => setIsOpen(false)}>
+                    Cursos
+                </Link>
+            ) : (
+                <>
+                    <Link
+                        href={route('login')}
+                        className="nav-link"
+                        onClick={() => setIsOpen(false)}
+                    >
+                        Ingresar
+                    </Link>
+                    <Link
+                        href={route('register')}
+                        className="nav-link"
+                        onClick={() => setIsOpen(false)}
+                    >
+                        Registrarse
+                    </Link>
+                </>
+            )}
+        </nav>
 				</header>
 
 				<main className="main-content">

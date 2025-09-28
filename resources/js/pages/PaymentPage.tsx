@@ -84,7 +84,7 @@ const PaymentPage = () => {
                                             return actions.order.capture().then(() => {
                                                 Swal.fire({
                                                     title: '¡Pago completado con éxito!',
-                                                    text: 'Tu suscripción ha sido activada. Serás redirigido a tu dashboard.',
+                                                    text: 'Tu suscripción ha sido activada. Serás redirigido a tus cursos.',
                                                     icon: 'success',
                                                     confirmButtonColor: '#3085d6',
                                                     confirmButtonText: 'Aceptar'

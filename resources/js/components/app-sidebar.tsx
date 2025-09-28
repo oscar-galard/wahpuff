@@ -15,9 +15,8 @@ export function AppSidebar() {
     const navItems = showDashboardLink 
         ? [
             {
-                title: "Dashboard",
-                href: "/dashboard",
-                icon: LayoutDashboard,
+                title: "Cursos",
+        href: "/dashboard",
             }
         ]
         : [];
