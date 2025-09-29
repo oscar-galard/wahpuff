@@ -7,12 +7,15 @@ use App\Http\Controllers\VideoController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DiscountCodeController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
 Route::post('newsletter/subscribe', [NewsletterController::class, 'store'])->name('newsletter.subscribe');
+Route::post('discount-code/validate', [DiscountCodeController::class, 'validateDiscountCode'])->name('discount-code.validate');
+Route::post('discount-code/use', [DiscountCodeController::class, 'markAsUsed'])->name('discount-code.use');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pago', [PaymentController::class, 'showPaymentPage'])->name('payment.page');

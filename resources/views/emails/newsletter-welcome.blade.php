@@ -126,18 +126,20 @@
         <li>
           <strong>Plan Impulsa Desde:</strong>
           <span class="original-price">$699 MXN</span>
-          <span class="current-price">$549 MXN</span>
-          <br>¿Quieres dedicarle más tiempo? Este es tu plan.
+          <span class="current-price">$525 MXN</span>
+          <br>¿Quieres dedicarle más tiempo a tu aprendizaje? Este es el plan correcto!.
         </li>
         <li>
           <strong>Plan Domina Desde:</strong>
           <span class="original-price">$999 MXN</span>
-          <span class="current-price">$799 MXN</span>
+          <span class="current-price">$749 MXN</span>
           <br>¿Quieres ser profesional? Elige este plan.
         </li>
       </ul>
 
       <div class="whatsapp-message">
+        <strong>¡Tu código de descuento exclusivo:</strong><br>
+        <code style="font-size: 1.2em; background: #d4edda; padding: 5px 10px; border-radius: 4px; color: #155724;">WELCOME25</code><br><br>
         <strong>Mensaje para WhatsApp:</strong><br>
         "Hola, estoy suscrito a la newsletter, quiero aprender a tocar guitarra con Wahpuff!!"
       </div>
