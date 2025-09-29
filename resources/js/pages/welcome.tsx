@@ -1,6 +1,7 @@
 import { type SharedData } from '@/types';
 import { Head, Link, usePage, useForm } from '@inertiajs/react';
 import React, { useState, useEffect, FormEventHandler } from 'react';
+import ReactPlayer from 'react-player';
 import Swal from 'sweetalert2';
 
 export default function Welcome() {
@@ -321,6 +322,29 @@ export default function Welcome() {
 									<ion-icon name="logo-whatsapp" className="whatsapp-icon"></ion-icon>
 									<span>Quiero mi primera clase gratis</span>
 								</a>
+							</div>
+							<div className="video-container">
+		<h3 className="video-title">Wahpuff es mas que una escuela, es una familia!</h3>
+								<div className="video-wrapper">
+									<ReactPlayer
+										src="https://www.youtube.com/watch?v=h0GM03k8l54"
+										controls={true}
+										width="100%"
+										height="100%"
+										className="react-player"
+										config={{
+											youtube: {
+												playerVars: {
+													origin: 'http://localhost:8000',
+													rel: 0,
+													showinfo: 0,
+													iv_load_policy: 3,
+													modestbranding: 1,
+												}
+											}
+										}}
+									/>
+								</div>
 							</div>
 						</div>
 					</section>
