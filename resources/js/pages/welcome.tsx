@@ -46,7 +46,43 @@ export default function Welcome() {
             }
         };
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        
+        // Check if user has already accepted cookies
+        const cookiesAccepted = localStorage.getItem('cookiesAccepted');
+        if (!cookiesAccepted) {
+            // Show cookie banner after a short delay
+            setTimeout(() => {
+                const cookieBanner = document.getElementById('cookie-banner');
+                if (cookieBanner) {
+                    cookieBanner.classList.remove('hidden');
+                }
+            }, 1000);
+        }
+        
+        // Handle cookie acceptance
+        const acceptButton = document.getElementById('accept-cookies');
+        if (acceptButton) {
+            acceptButton.addEventListener('click', () => {
+                localStorage.setItem('cookiesAccepted', 'true');
+                const cookieBanner = document.getElementById('cookie-banner');
+                if (cookieBanner) {
+                    cookieBanner.classList.add('hidden');
+                }
+            });
+        }
+        
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            if (acceptButton) {
+                acceptButton.removeEventListener('click', () => {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    const cookieBanner = document.getElementById('cookie-banner');
+                    if (cookieBanner) {
+                        cookieBanner.classList.add('hidden');
+                    }
+                });
+            }
+        };
     }, []);
 
     const toggleMenu = () => {
@@ -56,13 +92,24 @@ export default function Welcome() {
 	return (
 		<>
 			<Head title="Wahpuff clases de guitarra">
-				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-..." crossOrigin="anonymous" referrerPolicy="no-referrer" />
-				<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-				<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-				<script noModule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-			</Head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-..." crossOrigin="anonymous" referrerPolicy="no-referrer" />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+		<script noModule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+	</Head>
 
 			<div className="page-container modern">
+				{/* Cookie Consent Banner */}
+				<div id="cookie-banner" className="cookie-banner hidden">
+					<div className="cookie-content">
+						<p>
+							Usamos cookies para mejorar tu experiencia en nuestro sitio. 
+							Al continuar navegando, aceptas nuestra 
+							<Link href={route('privacy-policy')} className="cookie-link"> Política de Privacidad y Uso de Cookies</Link>.
+						</p>
+						<button id="accept-cookies" className="btn-primary small">Aceptar</button>
+					</div>
+				</div>
 				<header className="main-header modern">
 					<div className="logo-area">
 						{/* Asegúrate de que la ruta de la imagen sea accesible desde tu servidor */}
@@ -317,8 +364,7 @@ export default function Welcome() {
 							<p>© 2025 Wahpuff. Todos los derechos reservados.</p>
 						</div>
 						<nav className="footer-nav">
-							<a href="#terms" className="footer-link">Términos de Uso</a>
-							<a href="#privacy" className="footer-link">Política de Privacidad</a>
+							<Link href={route('privacy-policy')} className="footer-link">Política de Privacidad y Términos de Uso</Link>
 						</nav>
 					</div>
 				</footer>

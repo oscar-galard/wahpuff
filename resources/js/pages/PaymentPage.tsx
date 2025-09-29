@@ -224,7 +224,7 @@ const PaymentPage = () => {
                                             });
                                         }}
                                         onApprove={(data, actions) => {
-                                            return actions.order.capture().then(() => {
+                                            return actions.order.capture().then((details) => {
                                                 // Mark the discount code as used if applicable
                                                 if (discountApplied && discountCode) {
                                                     fetch(route('discount-code.use'), {
@@ -241,15 +241,32 @@ const PaymentPage = () => {
                                                     });
                                                 }
                                                 
-                                                Swal.fire({
-                                                    title: '¡Pago completado con éxito!',
-                                                    text: 'Tu suscripción ha sido activada. Serás redirigido a tus cursos.',
-                                                    icon: 'success',
-                                                    confirmButtonColor: '#3085d6',
-                                                    confirmButtonText: 'Aceptar'
-                                                }).then(() => {
-                                                    router.visit(route('dashboard'));
+                                                // Record subscription in our system
+                                                fetch(route('payment.success'), {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                                    },
+                                                    body: JSON.stringify({
+                                                        plan_id: selectedPlan.id,
+                                                        amount: finalPrice,
+                                                        transaction_id: details?.id || null, // PayPal transaction ID if available
+                                                    }),
+                                                }).catch(error => {
+                                                    console.error('Error recording subscription:', error);
+                                                    // We don't want to stop the user journey even if our recording fails
                                                 });
+
+Swal.fire({
+    title: '¡Pago completado con éxito!',
+    text: 'Tu suscripción ha sido activada. Serás redirigido a tus cursos.',
+    icon: 'success',
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'Aceptar'
+}).then(() => {
+    router.visit(route('dashboard'));
+});
                                             });
                                         }}
                                     />
