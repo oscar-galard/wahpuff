@@ -354,7 +354,7 @@ export default function Welcome() {
 						<div className="content-wrapper">
 							<h2>Suscribete YA!</h2>
 							<p className="section-description">
-								Recibe noticias sobre nuevos cursos y <strong>¡Descuentos Especiales!</strong>
+								Recibe tu primer clase gratis y <strong>¡Descuentos Especiales!</strong>
 							</p>
 
                             <form onSubmit={handleNewsletterSubmit} className="contact-form">
