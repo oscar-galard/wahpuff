@@ -1,79 +1,33 @@
-# Wahpuff - Plataforma de Clases de Guitarra 🎸
+# Guitar Lesson Platform Docker Setup
 
-¡Bienvenido al repositorio de Wahpuff!
+This project uses Laravel with React and Inertia for a guitar lesson platform.
 
-Wahpuff es una plataforma de educación musical en línea, diseñada para ofrecer clases de guitarra a estudiantes de todos los niveles. Desde principiantes que quieren tocar sus primeras canciones hasta guitarristas intermedios que buscan perfeccionar su técnica y teoría musical.
+## Prerequisites
 
-Este proyecto se ha hecho público con el objetivo de servir como un recurso y una referencia para otros desarrolladores. Es un ejemplo funcional de cómo construir una plataforma robusta y moderna para cursos, combinando tecnologías de vanguardia en el ecosistema web.
+- Docker Engine
+- Docker Compose
 
-## 🛠️ Tecnologías Utilizadas
+## Setup Instructions
 
-**Backend:**
+1. Clone the repository
+2. Copy `.env.example` to `.env` and adjust database settings if needed
+3. Run the following command to start all services:
 
-- **Laravel 12:** El framework de PHP más popular para el desarrollo de aplicaciones web.
-- **Autenticación:** Para la autenticación API, aunque se ha considerado el uso de JWT.
+```bash
+docker-compose up -d
+```
 
-**Frontend:**
+4. Access the application at http://localhost
 
-- **React:** La biblioteca de JavaScript para construir la interfaz de usuario.
-- **Inertia.js:** El "pegamento" que une el frontend de React con el backend de Laravel, permitiendo crear una SPA (Single Page Application) sin la complejidad de las APIs tradicionales.
-- **Tailwind CSS:** El framework de CSS para un diseño rápido y flexible.
+## Services
 
-**Gestión de Dependencias:**
+- **App**: Laravel application (PHP-FPM)
+- **Nginx**: Web server
+- **PostgreSQL**: Database
 
-- **Vite:** Un bundler de frontend de nueva generación, que ofrece un desarrollo rápido.
+## Useful Commands
 
-## 🚀 Características Clave
-
-- **Autenticación de Usuario:** Registro y login de usuarios.
-- **Clases de Guitarra:** Gestión de cursos con videos y materiales de apoyo.
-- **Comunidad y Soporte:** *(En desarrollo)*
-- **Integración de Pagos:** Conexión con la API de PayPal para el procesamiento de pagos.
-
-## 💡 ¿Por Qué Publicar este Repositorio?
-
-Mi objetivo al hacer este proyecto de código abierto es que sirva de guía. Si estás pensando en crear una plataforma de cursos, un sitio para membresías o cualquier aplicación web interactiva, puedes usar este código como referencia.
-
-Aquí podrás ver ejemplos prácticos de:
-
-- La integración fluida de Laravel y React con Inertia.js.
-- Cómo estructurar una aplicación a gran escala.
-- Manejo de rutas y componentes para una experiencia de usuario tipo SPA.
-
-## 📝 Cómo Empezar
-
-Si quieres explorar el código, clonarlo y ejecutarlo en tu entorno local, sigue los siguientes pasos:
-
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/tu-usuario/wahpuff.git
-   ```
-2. Instala las dependencias de Composer:
-   ```bash
-   composer install
-   ```
-3. Instala las dependencias de Node:
-   ```bash
-   npm install
-   ```
-4. Copia el archivo de entorno y genera la clave de la aplicación:
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
-5. Configura tu base de datos en el archivo `.env`.
-6. Ejecuta las migraciones:
-   ```bash
-   php artisan migrate
-   ```
-7. Inicia el servidor de desarrollo:
-   ```bash
-   npm run dev
-   php artisan serve
-   ```
-
-¡Ahora puedes acceder a la aplicación en [http://localhost:8000](http://localhost:8000)!
-
-## 🙏 Contribuciones
-
-Las contribuciones son bienvenidas. Si encuentras un bug, tienes una sugerencia o quieres mejorar alguna funcionalidad, no dudes en abrir un issue o enviar un pull request.
+- Stop containers: `docker-compose down`
+- View logs: `docker-compose logs -f`
+- Run artisan commands: `docker-compose exec app php artisan [command]`
+- Run npm commands: `docker-compose exec app npm run [command]`
