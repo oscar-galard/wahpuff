@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
-use App\Notifications\VerifyEmailNotification;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// Ya no necesitamos esta interfaz, así que la eliminamos:
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+// Ya no necesitamos esta Notificación personalizada si no usamos MustVerifyEmail
+// use App\Notifications\VerifyEmailNotification; 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable // Se eliminó "implements MustVerifyEmail"
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -44,20 +47,20 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            // Laravel seguirá teniendo esta columna en la base de datos, lo cual es inofensivo
+            'email_verified_at' => 'datetime', 
             'password' => 'hashed',
         ];
     }
 
-    /**
-     * Get the verification notification that should be sent.
-     *
-     * @return void
-     */
+    // ELIMINAMOS el método sendEmailVerificationNotification() completo.
+    // Estaba aquí:
+    /*
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmailNotification);
     }
+    */
 
     public function comments(): HasMany
     {
